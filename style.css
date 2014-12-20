@@ -1,0 +1,110 @@
+body {
+  font-family: Arial;
+  font-size: 10pt;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+}
+h1 {
+  background-color: black;
+  color: white;
+  margin: 0;
+  font-size: 12pt;
+  font-weight: bold;
+  font-family: Verdana;
+  padding: 8px;
+}
+
+p {
+  margin: 20px;
+}
+
+#picture {
+  position: absolute;
+  left: -1px;
+  top: 39px;
+}
+
+#nowplaying {
+  position: absolute;
+  left: 140px;
+  top: 40px;
+}
+
+#transport {
+  position: absolute;
+  left: 140px;
+  top: 132px;
+}
+
+#volumeLabel {
+  position: absolute;
+  left: 70px;
+  top: 184px;
+}
+#volumeSection {
+  position: absolute;
+  left: 140px;
+  top: 180px;
+}
+
+#power {
+  position: absolute;
+  left: 296px;
+  top: -17px;
+}
+
+.artist {
+  font-style: italic;
+}
+.track {
+  font-weight: bold;
+}
+
+span#volume {
+ width: 25px;
+ display: inline-block;
+ text-align: center;
+ font-size: 8pt;
+}
+
+img.artist {
+  max-width: 130px;
+  max-height: 130px;
+  border: solid 1px black;
+}
+
+a.button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:arial;
+	font-size:16px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+  width: 16px;
+  vertical-align: middle;
+  text-align: center;
+} a.button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+} a.button:active {
+	position:relative;
+	top:0px;
+}

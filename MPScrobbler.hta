@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+ <hta:application 
+ id="scrobbler"
+ applicationname="MusicPal Scrobbler"
+ border="thin"
+ borderstyle="static"
+ caption="yes"
+ contextmenu="no"
+ icon="musicpal.ico"
+ innerborder="no"
+ maximizebutton="no"
+ minimizebutton="yes"
+ navigable="no"
+ scroll="no"
+ scrollflat="yes"
+ selection="no"
+ showintaskbar="yes"
+ singleinstance="yes"
+ sysmenu="yes"
+ version="1.0"
+ windowstate="normal"
+ >
+ <title>MusicPal Scrobbler</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
+ <script type='text/Javascript' src='md5.js'></script>
+ <script type='text/Javascript' src='lastfm.js'></script>
+ <script type='text/Javascript' src='musicpal.js'></script>
+ <script>
+ <!--
+var spanArtist, spanTrack;
+var spanVolume;
+var picture;
+
+var volume = -1;
+
+var lastScrobbled = '';
+var nowPlaying;
+
+function onLoad()
+{
+  window.resizeTo(400, 280);
+  
+  spanArtist = window.document.getElementById('artist');
+  spanTrack  = window.document.getElementById('track');
+  spanVolume = window.document.getElementById('volume');
+  picture    = window.document.getElementById('picture');
+  
+  setTimeout(updateScrobble, 0);        // run it once now...
+  setInterval(updateScrobble, 30000);   // ...and then every 30s
+}
+
+function showVolume()
+{
+  spanVolume.innerText = (volume * 5).toString();
+}
+
+function updateTrackPicture()
+{
+  alert(nowPlaying.artist + nowPlaying.track);
+  var info = LastFM.track.getInfo(nowPlaying.artist, nowPlaying.track);
+  alert(info.responseXML.getElementsByTagName('image').length);
+}
+
+function getNowPlaying()
+{
+  var xml = MusicPal.getStatus();
+  var st = {};
+  st.playerState = getIntegerElement(xml, 'player_state');
+  st.isWebRadio  = getIntegerElement(xml, 'is_internet_radio');
+  st.volume = getIntegerElement(xml, 'volume');
+  var np = getStringElement(xml, 'now_playing');
+  var match = /(.+) - (.+)/.exec(np);
+  if (match)
+  {
+    st.artist = match[1];
+    st.track = match[2];
+  }
+  return st;
+}
+
+
+function showNowPlaying(np)
+{
+  spanArtist.innerText = np.artist || '';
+  spanTrack.innerText = np.track || '';
+  updateArtistImage(np.artist);
+}
+
+
+function getBestArtistImage(artist)
+{
+  var imgsXML = LastFM.artist.getImages(artist, 1, 3).responseXML;
+  var imgs = imgsXML.selectNodes("lfm/images/image/sizes/size[@name='largesquare']");
+  return imgs.length ? imgs[0].text : null;
+}
+
+
+function updateArtistImage(artist)
+{
+  if (!artist)
+    picture.innerHTML = '';
+  else
+  {
+    var src = getBestArtistImage(nowPlaying.artist);
+    if (src)
+      picture.innerHTML = '<img src="' + src + '" class="artist" />';
+    else
+      picture.innerHTML = '';
+  }
+}
+
+
+function powerDown()
+{
+  MusicPal.powerDown();
+  window.close();
+}
+
+
+function updateScrobble()
+{
+  nowPlaying = getNowPlaying();
+//  setTimeout(updateTrackPicture, 0);
+  volume = nowPlaying.volume;
+  showVolume();
+  if (nowPlaying)
+  {
+    showNowPlaying(nowPlaying);
+    
+    if (nowPlaying.playerState && !nowPlaying.isWebRadio && nowPlaying.artist && nowPlaying.track)
+    {
+      var encoded = encodeParams({'artist':nowPlaying.artist,'track':nowPlaying.track});
+      if (encoded != lastScrobbled)
+      {
+        lastScrobbled = encoded;
+        LastFM.track.scrobble(nowPlaying.artist, nowPlaying.track);
+      }
+    }
+  }
+}
+
+function volumeUp()
+{
+  MusicPal.volumeUp();
+  volume = Math.min(volume + 1, 20);
+  showVolume();
+}
+
+function volumeDown()
+{
+  MusicPal.volumeDown();
+  volume = Math.max(volume - 1, 0);
+  showVolume();
+}
+
+ //-->
+ </script>
+</head>
+
+<body onload='onLoad();'>
+<div class='header'><h1>MusicPal Scrobbler</h1></div>
+
+<p id='nowplaying'>
+<span class='artist' id='artist'>&mdash;</span><br/>
+<span class='track' id='track'></span>
+</p>
+
+<p id='transport'>
+<a href='#' onclick='javascript:MusicPal.playPause();' class='button'>II</a>
+<a href='#' onclick='javascript:MusicPal.nextTrack();' class='button'>I&gt;</a>
+</p>
+
+<p id='volumeLabel'>
+ Volume
+</p>
+<p id='volumeSection'>
+ <a href='#' onclick='javascript:volumeDown();' class='button' style='padding:2px 8px;'>-</a><span id='volume'>
+ </span><a href='#' onclick='javascript:volumeUp();' class='button' style='padding:2px 8px;'>+</a>
+</p>
+
+<p id='power'>
+<a href='#' onclick='javascript:powerDown();' class='button'>Off</a>
+</p>
+
+<p id='picture'></p>
+
+
+</body>
+</html>
